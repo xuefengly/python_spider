@@ -1,0 +1,63 @@
+1.
+注意页面请求参数：(会改变)
+即Query String Parameters
+因为它是data的数据
+例：
+今日头条里街拍综合的数据为
+'offset': 0,
+'format': 'json',
+'keyword': '街拍',
+'autoload': 'true',
+'count': 20,
+'cur_tab': 1,
+'from': 'search_tab'
+而实际上图集的为：
+'offset': 0,
+'format': 'json',
+'keyword': '街拍',
+'autoload': 'true',
+'count': 20,
+'cur_tab': 3,
+'from': 'gallery'
+2.
+urlencode()方法
+urlencode可以把字典对象变成url的请求参数
+例：
+from urllib.parse import urlencode
+data = {
+    'id':3,
+    'keyword':"key",
+    'count':20
+}
+url="https://www.baidu.com/?"+urlencode(data)
+print(url)#https://www.baidu.com/?keyword=key&count=20&id=3
+
+3.
+关于使用正则获取的数据格式问题：
+使用replace()方法调整
+replace() 方法把字符串中的 old（旧字符串） 替换成 new(新字符串)，如果指定第三个参数max，则替换不超过 max 次。
+语法：str.replace(old, new[, max])
+例：
+newresult = result.group(1).replace('\\','')#因为得到的数据中许多地方被插入了\,替换为空格即可得到正确格式
+
+4.
+json.loads()方法
+将已编码的 JSON 字符串解码为 Python 对象
+详情可见：http://www.runoob.com/python/python-json.html
+5.
+关于url变换的问题
+当我们用爬虫获取的组图的URL并不是真实的地址，今日头条会重新定向
+例：
+获取的URL：http://toutiao.com/group/6511977315122020871/
+实际该组图地址：https://www.toutiao.com/a6511977315122020871/
+使用浏览器发现，当我们输入获取的URL时，网页会重新定向到实际地址，但是爬虫程序不能，所以找不到title
+解决办法：
+给get请求加上headers参数
+headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'}
+response = requests.get(url,headers=headers)
+完美解决！！！
+6.
+关于爬取次数过多被封ip：
+（1）如果使用的是路由器重启路由器即可
+（2）如果是拨号上网断网重新拨号即可
+（3）使用代理
